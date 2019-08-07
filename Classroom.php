@@ -1,9 +1,17 @@
 <?php
 
-ini_set('display_errors','on'); error_reporting(E_ALL);
+include_once 'config.php';
+include_once 'include/Webservices/Relation.php';
 
-include_once "vtlib/Vtiger/Module.php";
+include_once 'includes/main/WebUI.php';
+
+include_once 'vtlib/Vtiger/Module.php';
 require_once("vtlib/Vtiger/Package.php");
+
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
+ini_set("log_errors", 1);
+ini_set("error_log", "php-error.log");
 
 $Vtiger_Utils_Log = true;
 
@@ -12,11 +20,14 @@ $MODULENAME = "Classroom";
 $oldInstance = Vtiger_Module::getInstance($MODULENAME);
 if ($oldInstance) $oldInstance->delete();
 
-$moduleInstance         = new Vtiger_Module();
-$moduleInstance->name   = $MODULENAME;
+$moduleInstance       = new Vtiger_Module();
+$moduleInstance->name = $MODULENAME;
 $moduleInstance->parent = "Tools";
 $moduleInstance->save();
 $moduleInstance->initTables();
+$menuInstance = Vtiger_Menu::getInstance('MARKETING');
+print_r($menuInstance);
+$menuInstance->addModule($moduleInstance);
 
 $infoBlock        = new Vtiger_Block();
 $infoBlock->label = "LBL_".strtoupper($moduleInstance->name)."_INFORMATION";
@@ -30,7 +41,7 @@ $moduleInstance->setRelatedList($contactModule, $relLabel, Array("ADD", "SELECT"
 /**
  *  Наименование или № класса
  */
-$nameIsField                = new Vtiger_Field();
+$nameIsField               = new Vtiger_Field();
 $nameIsField->name         = "name";
 $nameIsField->label        = "Name";
 $nameIsField->uitype       = 2;
@@ -70,19 +81,6 @@ $infoBlock->addField($typeIsField);
 $typeIsField->setPicklistValues(Array("Открытый", "Закрытый"));
 
 /**
- * Максимальное кол-во учащихся
- */
-$maxCountOfPupilsIsField               = new Vtiger_Field();
-$maxCountOfPupilsIsField->name         = "max_pupils";
-$maxCountOfPupilsIsField->label        = "Maximum pupils";
-$maxCountOfPupilsIsField->uitype       = 1;
-$maxCountOfPupilsIsField->summaryfield = 1;
-$maxCountOfPupilsIsField->column       = $maxCountOfPupilsIsField->name;
-$maxCountOfPupilsIsField->columntype   = "INT(11)";
-$maxCountOfPupilsIsField->typeofdata   = "I~M";
-$infoBlock->addField($maxCountOfPupilsIsField);
-
-/**
  * Минимальное кол-во учащихся
  */
 $minCountOfPupilsIsField               = new Vtiger_Field();
@@ -94,6 +92,19 @@ $minCountOfPupilsIsField->column       = $minCountOfPupilsIsField->name;
 $minCountOfPupilsIsField->columntype   = "INT(11)";
 $minCountOfPupilsIsField->typeofdata   = "I~M";
 $infoBlock->addField($minCountOfPupilsIsField);
+
+/**
+ * Максимальное кол-во учащихся
+ */
+$maxCountOfPupilsIsField               = new Vtiger_Field();
+$maxCountOfPupilsIsField->name         = "max_pupils";
+$maxCountOfPupilsIsField->label        = "Maximum pupils";
+$maxCountOfPupilsIsField->uitype       = 1;
+$maxCountOfPupilsIsField->summaryfield = 1;
+$maxCountOfPupilsIsField->column       = $maxCountOfPupilsIsField->name;
+$maxCountOfPupilsIsField->columntype   = "INT(11)";
+$maxCountOfPupilsIsField->typeofdata   = "I~M";
+$infoBlock->addField($maxCountOfPupilsIsField);
 
 /**
  * Ответственный: руководитель, учитель или педагог
@@ -120,6 +131,7 @@ $descriptionIsField->name       = "description";
 $descriptionIsField->label      = "Description";
 $descriptionIsField->table      = "vtiger_crmentity";
 $descriptionIsField->column     = $descriptionIsField->name;
+$descriptionIsField->uitype     = 19;
 $descriptionIsField->typeofdata = "V~O";
 $descriptionBlock->addField($descriptionIsField);
 
@@ -130,7 +142,7 @@ $filter1->isdefault = true;
 $moduleInstance->addFilter($filter1);
 $filter1->addField($nameIsField)
     ->addField($statusIsField, 1)
-    ->addField($typeIsField,2);
+    ->addField($typeIsField, 2);
 
 //настройка совместного доступа (права доступа устанавливаются по умолчанию).
 $moduleInstance->setDefaultSharing();
@@ -138,5 +150,10 @@ $moduleInstance->setDefaultSharing();
 //инициализация Веб-сервиса (автоматический вызов API)
 $moduleInstance->initWebservice();
 
+$focus = CRMEntity::getInstance($MODULENAME);
+
+echo "init pack<br/>";
 $package = new Vtiger_Package();
-$package->export($moduleInstance, "test/vtlib", "tstClassroom.zip", false);
+echo "before pack<br/>";
+$package->export($moduleInstance, "test/vtlib", "Classroom.zip", false);
+echo "after pack<br/>";

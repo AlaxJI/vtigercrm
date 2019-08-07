@@ -105,7 +105,7 @@ class Vtiger_PackageExport {
 	 * @param String Zipfilename to use
 	 * @param Boolean True for sending the output as download
 	 */
-        
+
         //SalesPlatform.ru begin
 	function export($moduleInstance, $todir='', $zipfilename='', $directDownload=false, $dismissManifest = false) {
 	//function export($moduleInstance, $todir='', $zipfilename='', $directDownload=false) {
@@ -160,7 +160,7 @@ class Vtiger_PackageExport {
 
 		if(is_dir("layouts/vlayout/skins/images/$module"))
 			$zip->copyDirectoryFromDisk ("layouts/vlayout/skins/images/$module", "images");
-		
+
 		if(is_dir("layouts/v7/modules/$module"))
 			$zip->copyDirectoryFromDisk("layouts/v7/modules/$module", "layouts/v7/modules/$module");
 
@@ -435,14 +435,14 @@ class Vtiger_PackageExport {
 			$this->outputNode($fieldresultrow['displaytype'],   'displaytype');
 			$this->outputNode($fieldresultrow['info_type'],     'info_type');
 			$this->outputNode('<![CDATA['.$fieldresultrow['helpinfo'].']]>', 'helpinfo');
-                        
+
             // SalesPlatform.ru begin added columntype
             $sql = "DESCRIBE ".$fieldresultrow['tablename']." ".$fieldresultrow['columnname'];
             $coltype = $adb->pquery($sql, array());
             $columntype = $adb->query_result($coltype, 0, 1);
             $this->outputNode($columntype, 'columntype');
             // SalesPlatform.ru end
-                        
+
 			if(isset($fieldresultrow['masseditable'])) {
 				$this->outputNode($fieldresultrow['masseditable'], 'masseditable');
 			}

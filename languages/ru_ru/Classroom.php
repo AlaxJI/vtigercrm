@@ -3,17 +3,17 @@
 $languageStrings = array(
     "Classroom"                 => "Учебный класс",
     "SINGLE_Classroom"          => "Учебный класс",
-    "LBL_ADD_RECORD"            => "Добавить запись в мой Модуль",
-    "LBL_RECORDS_LIST"          => "Список записей в моем Модуле",
+    "LBL_ADD_RECORD"            => "Добавить Учебный класс",
+    "LBL_RECORDS_LIST"          => "Список Учебных классов",
     "LBL_CLASSROOM_INFORMATION" => "Информация о классе",
     "LBL_CLASSROOM_DESCRIPTION" => "Описание",
     "Name"                      => "Имя",
     "Status"                    => "Статус",
     "Type"                      => "Тип класса",
-    "Assigned_user"             => "Ответственный",
+    "Assigned User"             => "Ответственный",
     "Description"               => "Описание",
-    "Min_pupils"                => "Минимальное кол-во учеников",
-    "Max_pupils"                => "Максимальное кол-во учеников",
+    "Minimum pupils"                => "Минимальное кол-во учеников",
+    "Maximum pupils"                => "Максимальное кол-во учеников",
 );
 
 // Начать исправление
