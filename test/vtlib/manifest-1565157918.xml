@@ -1,0 +1,10 @@
+<?xml version='1.0'?>
+<module>
+<exporttime>2019-08-07 09:05:18</exporttime>
+<name>Classroom</name>
+<label>Classroom</label>
+<parent>Tools</parent>
+<dependencies>
+<vtiger_version>7.1.0-201803</vtiger_version>
+</dependencies>
+<tables>
